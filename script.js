@@ -9,6 +9,11 @@ Calculadora en pantalla con HTML, JS y CSS
 
 */
 
+let n1 = ""
+let n2 = ""
+let op = ""
+
+
 const suma = (numero1, numero2) => {
     return numero1 + numero2;
 }
@@ -36,11 +41,11 @@ const operator = (operador, numero1, numero2) => {
             valor = resta(numero1, numero2)
 
             break;
-        case "x":
-            valor = multiplicacion(numero1, numero2)
-
-            break;
-        case "/":
+            case "x":
+                valor = multiplicacion(numero1, numero2)
+                
+                break;
+                case "/":
             valor = division(numero1, numero2)
 
             break;
@@ -48,9 +53,13 @@ const operator = (operador, numero1, numero2) => {
 
     return valor;
 }
-let n1 = ""
-let n2 = ""
-let op = ""
+
+const limpiar = () => {
+    n1 = ""
+    n2 = ""
+    op = ""
+    display.textContent = "0"
+}
 
 const display = document.getElementById("result");
 
@@ -62,6 +71,12 @@ numeros_array.forEach((boton) => {
 
         let numero = boton.textContent
         if(display.textContent === "0") { display.textContent = ""}
+
+        if(n1 !== "" && n2 !== "" && op !== "") {
+            limpiar()
+            display.textContent = ""
+
+        }
 
         if(n2 == "" && op == "") {
             display.textContent += numero
@@ -105,5 +120,23 @@ const equal = document.getElementById("igual");
 equal.addEventListener("click", () => {
     display.textContent = operator(op,Number(n1), Number(n2))
     
+})
 
+const clear = document.querySelector("#clear")
+
+
+clear.addEventListener("click", (e) => {
+    limpiar()
+
+})
+
+const borrar = document.querySelector("#delete")
+
+
+borrar.addEventListener("click", (e) => {
+    if (display.textContent !== "0") {
+        display.textContent = display.textContent.slice(0, -1)
+        
+        if(display.textContent == "") {display.textContent = "0"}
+    }
 })
