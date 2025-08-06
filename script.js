@@ -140,3 +140,11 @@ borrar.addEventListener("click", (e) => {
         if(display.textContent == "") {display.textContent = "0"}
     }
 })
+
+const dot = document.querySelector("#punto")
+
+dot.addEventListener("click", (e) => {
+    if(!display.textContent.includes(".")) {
+        display.textContent += "."
+    }
+})
