@@ -12,6 +12,7 @@ Calculadora en pantalla con HTML, JS y CSS
 let n1 = ""
 let n2 = ""
 let op = ""
+let operado = false
 
 
 const suma = (numero1, numero2) => {
@@ -41,11 +42,11 @@ const operator = (operador, numero1, numero2) => {
             valor = resta(numero1, numero2)
 
             break;
-            case "x":
-                valor = multiplicacion(numero1, numero2)
+        case "x":
+            valor = multiplicacion(numero1, numero2)
                 
-                break;
-                case "/":
+            break;
+        case "/":
             valor = division(numero1, numero2)
 
             break;
@@ -72,16 +73,16 @@ numeros_array.forEach((boton) => {
         let numero = boton.textContent
         if(display.textContent === "0") { display.textContent = ""}
 
-        if(n1 !== "" && n2 !== "" && op !== "") {
+        if(operado && op === "") {
             limpiar()
             display.textContent = ""
-
+            operado = false
         }
 
         if(n2 == "" && op == "") {
             display.textContent += numero
             n1 = display.textContent
-            console.log(n1)
+
 
         } else if(n1 !== "" && op !== "") {
             // Display dejar en blanco en el event listener de los operaadores
@@ -90,8 +91,9 @@ numeros_array.forEach((boton) => {
             }
             display.textContent += numero
             n2 = display.textContent
-            console.log(n2)
+            
         }
+        
         
     })
 })
@@ -101,16 +103,23 @@ let operadores_array = [...document.querySelectorAll(".operador")]
 operadores_array.forEach((boton) => {
     boton.addEventListener("click", (e) => {
         let operador = boton.textContent
+
+
+        if (operado) {
+            operado = false
+            n2 = ""
+        }
+
         // Caso donde se aprete un operador sin apretar el igual (=)
         if(n1 !== "" && n2 !== "") {
             display.textContent = operator(op, Number(n1), Number(n2))
             n1 = display.textContent
             n2 = ""
             op = operador
-            console.log("Entraste en el caso" + op)
+
         } else {
             op = operador
-            console.log(op)
+
         }
     })
 })
@@ -118,8 +127,12 @@ operadores_array.forEach((boton) => {
 const equal = document.getElementById("igual");
 
 equal.addEventListener("click", () => {
-    display.textContent = operator(op,Number(n1), Number(n2))
-    
+    const resultado = operator(op, Number(n1), Number(n2))
+    display.textContent = resultado
+    operado = true
+
+    n1 = String(resultado)              
+    op = ""
 })
 
 const clear = document.querySelector("#clear")
